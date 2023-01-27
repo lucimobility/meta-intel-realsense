@@ -6,6 +6,7 @@ require librealsense2.inc
 DEPENDS = "\
     libusb1 \
     udev \
+    sqlite3 \
 "
 
 DEPENDS += "${@bb.utils.contains('DISTRO_FEATURES', 'x11 opengl', 'libpng libglu glfw gtk+3', '', d)}"
@@ -27,6 +28,7 @@ SRC_URI += "\
     file://Enable-riscv-arch-compilation.patch \
     file://Remove-R200-fix-from-udev-rules.patch \
     file://Avoid-installing-viewer-presets.patch \
+    file://0001-Remove-vendored-SQLite3.patch \
 "
 
 PR = "r0"
