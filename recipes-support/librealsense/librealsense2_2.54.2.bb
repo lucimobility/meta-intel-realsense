@@ -28,7 +28,7 @@ SRC_URI += "\
     file://Enable-riscv-arch-compilation.patch \
     file://Remove-R200-fix-from-udev-rules.patch \
     file://Avoid-installing-viewer-presets.patch \
-    file://0001-Remove-vendored-SQLite3.patch \
+    file://remove-libusb-from-targets-list.patch \
 "
 
 PR = "r0"
@@ -111,3 +111,4 @@ FILES:${PN}-debug-tools = "\
     ${bindir}/rs-rosbag-inspector \
     ${bindir}/rs-terminal \
 "
+PACKAGE_DEBUG_SPLIT_STYLE = "debug-without-src"
