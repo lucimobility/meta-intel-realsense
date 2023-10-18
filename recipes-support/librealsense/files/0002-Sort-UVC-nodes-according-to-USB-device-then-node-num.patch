@@ -1,0 +1,36 @@
+From ff75b32dd36d5027e18979cf950cc921c5e1d441 Mon Sep 17 00:00:00 2001
+From: Kevin Lannen <kevin@luci.com>
+Date: Wed, 18 Oct 2023 16:58:42 -0600
+Subject: [PATCH] Sort UVC nodes according to USB device then node number
+
+At system startup, there is no guarantee from Linux that the nodes for one device will all be sequential
+---
+ src/linux/backend-v4l2.cpp | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/src/linux/backend-v4l2.cpp b/src/linux/backend-v4l2.cpp
+index b1caa103d..52bd911a6 100644
+--- a/src/linux/backend-v4l2.cpp
++++ b/src/linux/backend-v4l2.cpp
+@@ -613,10 +613,16 @@ namespace librealsense
+             closedir(dir);
+ 
+             // Matching video and metadata nodes
+-            // UVC nodes shall be traversed in ascending order for metadata nodes assignment ("dev/video1, Video2..
+-            // Replace lexicographic with numeric sort to ensure "video2" is listed before "video11"
++            //
++            // First sort the nodes by which USB device they belong to then sort by the node number.
++            //
++            // UVC node sorting is done in ascending order for metadata nodes assignment ("dev/video1, Video2..
++            // using a numeric sort to ensure "video2" is listed before "video11"
+             std::sort(begin(uvc_nodes),end(uvc_nodes),[](const node_info& lhs, const node_info& rhs)
+                         {
++                            if (lhs.first.unique_id != rhs.first.unique_id) {
++                                return lhs.first.unique_id < rhs.first.unique_id;
++                            }
+                             std::stringstream index_l(lhs.first.id.substr(lhs.first.id.find_first_of("0123456789")));
+                             std::stringstream index_r(rhs.first.id.substr(rhs.first.id.find_first_of("0123456789")));
+                             int left_id = 0;  index_l >> left_id;
+-- 
+2.42.0
+
