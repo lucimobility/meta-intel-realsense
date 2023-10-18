@@ -29,6 +29,7 @@ SRC_URI += "\
     file://Remove-R200-fix-from-udev-rules.patch \
     file://Avoid-installing-viewer-presets.patch \
     file://0001-Remove-vendored-SQLite3.patch \
+    file://0002-Sort-UVC-nodes-according-to-USB-device-then-node-num.patch \
 "
 
 PR = "r0"
